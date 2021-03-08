@@ -21,32 +21,34 @@ app.get('/createUser', function (req, res) {
 })
 
 function readerTemp(data) {
-    return `<table>
-                    <tr><td>${data.name}</td><td>${data.book}</td></tr>
-            </table>`;
+    return `<tr><td>${data.name}</td><td>${data.book}</td></tr>`;
 }
 
 app.get('/allBooks', function (req, res) {
     res.send(`
+            <style>
+                table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+            th, td {
+                padding: 15px;
+            }
+            </style>
             <body style="font-family: Arial, Helvetica, sans-serif;">
             <center>
                     <h1>Book App</h1>
                     <div><p>All Books</p></div>
                     <br>
-                    <table>
+                    <table style="width:50%">
                         <tr><th>User</th><th>Books</th></tr>
-                        <tr>${users.map(readerTemp).join('')}</tr>
+                        ${users.map(readerTemp).join('')}
                     </table>
             </center>
             </body>`)
 })
 
-
 app.get('/favBooks', function (req, res) {
-
-    function run(func) {
-        func();
-    }
 
     function book1() {
         let count = 0;
@@ -55,7 +57,7 @@ app.get('/favBooks', function (req, res) {
                 count += 1;
             }
         }
-        return `<div>${count}</div>`;
+        return count;
     }
 
     function book2() {
@@ -65,7 +67,7 @@ app.get('/favBooks', function (req, res) {
                 count += 1;
             }
         }
-        return `<div>${count}</div>`;
+        return count;
     }
     function book3() {
         let count = 0;
@@ -74,30 +76,48 @@ app.get('/favBooks', function (req, res) {
                 count += 1;
             }
         }
-        return `<div>${count}</div>`;
+        return count;
     }
 
-    run(book1);
-    run(book2);
-    run(book3);
+    function favBook() {
+        if (book1() > book2() && book1() > book3()) {
+            return "Grow Rich"
+        }
+        else if (book2() > book1() && book1() > book3()) {
+            return "The Secret"
+        }
+        else if (book3() > book1() && book1() > book2()) {
+            return "Ben Carson"
+        }
+        else {
+            return "None"
+        }
+    }
 
-    res.send(`<body style="font-family: Arial, Helvetica, sans-serif;">
+    res.send(`
+    <style>
+        table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        }
+        th, td {
+        padding: 15px;
+        }
+    </style>
+    <body style="font-family: Arial, Helvetica, sans-serif;">
     <center>
         <h1>Book App</h1>
         <div>
             <p>Favourte Book</p>
         </div>
         <br>
-        <table>
-            <tr>
-                <td>Grow Rich</td><td>${book1()}</td>
-            <tr>
-                <td>The Secret</td><td>${book2()}</td>
-            <tr>
-                <td>Ben Carson</td><td>${book3()}</td>
+        <table style="width:50%">
+            <tr><th>Books</th><th>Count</th></tr>
+            <tr><td>Grow Rich</td><td>${book1()}</td></tr>
+            <tr><td>The Secret</td><td>${book2()}</td></tr>
+            <tr><td>Ben Carson</td><td>${book3()}</td></tr>
         </table>
-        <div>
-            <div>
+        <br><p>The favourite book is: ${favBook()}</p>
     </center>
 </body>
     `)
