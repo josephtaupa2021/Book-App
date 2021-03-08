@@ -41,40 +41,46 @@ app.get('/allBooks', function (req, res) {
             </body>`)
 })
 
-function run(func) {
-    func();
-}
-
-function book1() {
-    let count = null;
-    for (let i = 0; i < users.length; i++) {
-        const title = users[i].book;
-        if (title === "Grow Rich") {
-            return count += 1;
-        }
-    }
-}
-function book2() {
-    let count = null;
-    for (let i = 0; i < users.length; i++) {
-        const title = users[i].book;
-        if (title === "The Secret") {
-            return count += 1;
-        }
-    }
-}
-function book3() {
-    let count = null;
-    for (let i = 0; i < users.length; i++) {
-        const title = users[i].book;
-        if (title === "Ben Carson") {
-            count += 1;
-        }
-        return count;
-    }
-}
 
 app.get('/favBooks', function (req, res) {
+
+    function run(func) {
+        func();
+    }
+
+    function book1() {
+        let count = 0;
+        for (const title of users) {
+            if (title.book === "Grow Rich") {
+                count += 1;
+            }
+        }
+        return `<div>${count}</div>`;
+    }
+
+    function book2() {
+        let count = 0;
+        for (const title of users) {
+            if (title.book === "The Secret") {
+                count += 1;
+            }
+        }
+        return `<div>${count}</div>`;
+    }
+    function book3() {
+        let count = 0;
+        for (const title of users) {
+            if (title.book === "Ben Carson") {
+                count += 1;
+            }
+        }
+        return `<div>${count}</div>`;
+    }
+
+    run(book1);
+    run(book2);
+    run(book3);
+
     res.send(`<body style="font-family: Arial, Helvetica, sans-serif;">
     <center>
         <h1>Book App</h1>
@@ -84,11 +90,11 @@ app.get('/favBooks', function (req, res) {
         <br>
         <table>
             <tr>
-                <td>Grow Rich</td><td>${run(book1)}</td>
+                <td>Grow Rich</td><td>${book1()}</td>
             <tr>
-                <td>The Secret</td><td>${run(book2)}</td>
+                <td>The Secret</td><td>${book2()}</td>
             <tr>
-                <td>Ben Carson</td><td>${run(book3)}</td>
+                <td>Ben Carson</td><td>${book3()}</td>
         </table>
         <div>
             <div>
